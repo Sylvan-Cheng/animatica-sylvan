@@ -12,7 +12,7 @@
 
 ## 当前状态
 
-这是基于 Animatica Continuation `0.6+1.21.11` 的 26.1.2 移植开发版。已通过本机离线 Gradle 构建和 Fabric 客户端启动测试，并使用 Recolourful Containers GUI + HUD `3.1.3` 验证附魔台、铁砧、炉火和信标动画。该实测只覆盖此资源包，其他资源包仍需测试。
+这是基于 Animatica Continuation `0.6+1.21.11` 的 26.1.2 非官方移植版。已通过本机离线 Gradle 构建和 Fabric 客户端启动测试，并使用 Recolourful Containers GUI + HUD `3.1.3` 验证附魔台、铁砧、炉火和信标动画。该实测只覆盖此资源包，其他资源包仍需测试。
 
 ## 构建
 
