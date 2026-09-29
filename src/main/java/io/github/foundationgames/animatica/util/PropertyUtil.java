@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import io.github.foundationgames.animatica.util.exception.InvalidPropertyException;
 import io.github.foundationgames.animatica.util.exception.MissingPropertyException;
 import io.github.foundationgames.animatica.util.exception.PropertyParseException;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 
 import java.util.Map;
 import java.util.Properties;

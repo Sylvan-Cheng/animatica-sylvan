@@ -1,7 +1,7 @@
 package io.github.foundationgames.animatica.util;
 
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.util.math.MathHelper;
+import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.util.Mth;
 
 public enum TextureUtil {;
 
@@ -30,7 +30,7 @@ public enum TextureUtil {;
 
                 // set the color of the target pixel on the destination image
                 // to the color from the corresponding pixel on the source image
-                dest.setColorArgb(trgX, trgY, src.getColorArgb(srcX, srcY));
+                dest.setPixel(trgX, trgY, src.getPixel(srcX, srcY));
             }
         }
     }
@@ -67,7 +67,7 @@ public enum TextureUtil {;
 
                 // set the color of the target pixel on the destination image to a blend
                 // of the colors from the corresponding pixels on the source image
-                dest.setColorArgb(trgX, trgY, lerpColor(src.getColorArgb(srcX0, srcY0), src.getColorArgb(srcX1, srcY1), blend));
+                dest.setPixel(trgX, trgY, lerpColor(src.getPixel(srcX0, srcY0), src.getPixel(srcX1, srcY1), blend));
             }
         }
     }
@@ -96,10 +96,10 @@ public enum TextureUtil {;
             b2 = b1;
         }
 
-        int oa = MathHelper.lerp(delta, a1, a2);
-        int or = MathHelper.lerp(delta, r1, r2);
-        int og = MathHelper.lerp(delta, g1, g2);
-        int ob = MathHelper.lerp(delta, b1, b2);
+        int oa = Mth.lerpInt(delta, a1, a2);
+        int or = Mth.lerpInt(delta, r1, r2);
+        int og = Mth.lerpInt(delta, g1, g2);
+        int ob = Mth.lerpInt(delta, b1, b2);
 
         return (oa << 24) | (or << 16) | (og << 8) | ob;
     }

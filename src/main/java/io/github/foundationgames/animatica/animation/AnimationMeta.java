@@ -4,8 +4,8 @@ import io.github.foundationgames.animatica.util.PropertyUtil;
 import io.github.foundationgames.animatica.util.Utilities;
 import io.github.foundationgames.animatica.util.exception.InvalidPropertyException;
 import io.github.foundationgames.animatica.util.exception.PropertyParseException;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.InvalidIdentifierException;
+import net.minecraft.IdentifierException;
+import net.minecraft.resources.Identifier;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -22,11 +22,11 @@ public record AnimationMeta(
         Identifier source;
         Identifier target;
         try {
-            source = Utilities.processPath(file, Identifier.of(PropertyUtil.get(file, properties, "from")));
-        } catch (InvalidIdentifierException ex) { throw new InvalidPropertyException(file, "from", "resource location"); }
+            source = Utilities.processPath(file, Identifier.parse(PropertyUtil.get(file, properties, "from")));
+        } catch (IdentifierException ex) { throw new InvalidPropertyException(file, "from", "resource location"); }
         try {
-            target = Utilities.processPath(file, Identifier.of(PropertyUtil.get(file, properties, "to")));
-        } catch (InvalidIdentifierException ex) { throw new InvalidPropertyException(file, "to", "resource location"); }
+            target = Utilities.processPath(file, Identifier.parse(PropertyUtil.get(file, properties, "to")));
+        } catch (IdentifierException ex) { throw new InvalidPropertyException(file, "to", "resource location"); }
         return new AnimationMeta(
                 source,
                 target,

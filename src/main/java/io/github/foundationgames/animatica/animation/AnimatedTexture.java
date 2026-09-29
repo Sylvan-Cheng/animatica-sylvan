@@ -3,24 +3,24 @@ package io.github.foundationgames.animatica.animation;
 import com.google.common.collect.ImmutableList;
 import io.github.foundationgames.animatica.Animatica;
 import io.github.foundationgames.animatica.util.TextureUtil;
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.texture.NativeImageBackedTexture;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.Mth;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AnimatedTexture extends NativeImageBackedTexture {
+public class AnimatedTexture extends DynamicTexture {
     public final Animation[] anims;
     private final NativeImage original;
     private int frame = 0;
 
     public static Optional<AnimatedTexture> tryCreate(ResourceManager resources, Identifier targetTexId, List<AnimationMeta> anims) {
-        try (var targetTexResource = resources.getResourceOrThrow(targetTexId).getInputStream()) {
+        try (var targetTexResource = resources.getResourceOrThrow(targetTexId).open()) {
             return Optional.of(new AnimatedTexture(resources, anims, NativeImage.read(targetTexResource)));
         } catch (IOException e) { Animatica.LOG.error(e); }
 
@@ -28,7 +28,7 @@ public class AnimatedTexture extends NativeImageBackedTexture {
     }
 
     public AnimatedTexture(ResourceManager resources, List<AnimationMeta> metas, NativeImage image) throws IOException {
-        super(() -> "animatica animated texture", new NativeImage(image.getFormat(), image.getWidth(), image.getHeight(), true));
+        super(() -> "animatica animated texture", new NativeImage(image.format(), image.getWidth(), image.getHeight(), true));
 
         this.anims = new Animation[metas.size()];
         for (int i = 0; i < metas.size(); i++) {
@@ -36,7 +36,7 @@ public class AnimatedTexture extends NativeImageBackedTexture {
         }
         this.original = image;
 
-        updateAndDraw(this.getImage(), true);
+        updateAndDraw(this.getPixels(), true);
         this.upload();
     }
 
@@ -91,7 +91,7 @@ public class AnimatedTexture extends NativeImageBackedTexture {
     }
 
     public void tick() {
-        if (this.updateAndDraw(this.getImage(), false)) {
+        if (this.updateAndDraw(this.getPixels(), false)) {
             this.upload();
         }
     }
@@ -128,7 +128,7 @@ public class AnimatedTexture extends NativeImageBackedTexture {
             this.width = meta.width();
             this.height = meta.height();
 
-            try (var source = resources.getResourceOrThrow(meta.source()).getInputStream()) {
+            try (var source = resources.getResourceOrThrow(meta.source()).open()) {
                 this.sourceTexture = NativeImage.read(source);
             }
 
@@ -234,7 +234,7 @@ public class AnimatedTexture extends NativeImageBackedTexture {
         }
 
         private int getVForFrame(int frame, int textureFrameCount) {
-            return MathHelper.clamp(frame * this.height, 0, (textureFrameCount - 1) * this.height);
+            return Mth.clamp(frame * this.height, 0, (textureFrameCount - 1) * this.height);
         }
     }
 
